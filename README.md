@@ -101,14 +101,22 @@ IAM ensures:
 
 ```text
 .
-├── lambda/
-│   └── processLogs.js        # Lambda function logic
-├── policies/
-│   └── iam.json              # IAM policies for each component
-├── events/
-│   └── sample-event.json     # Sample EventBridge input
-├── README.md
-└── template.yaml             # (optional) SAM/CDK/Terraform file
+|-- api.tf
+|-- backend
+|-- cloudwatch.tf
+|-- event_bridge.tf
+|-- guide.txt
+|-- lambda.tf
+|-- lambda_function.py
+|-- output.tf
+|-- policy.tf
+|-- process_logs_lambda.zip
+|-- provider.tf
+|-- s3.tf
+|-- sec_hub.tf
+|-- sns.tf
+|-- terraform.tfstate
+`-- terraform.tfstate.backup
 ```
 
 ---
