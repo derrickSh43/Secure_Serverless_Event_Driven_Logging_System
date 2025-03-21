@@ -97,3 +97,38 @@ IAM ensures:
 
 ---
 
+## 📁 Directory Structure
+
+```text
+.
+├── lambda/
+│   └── processLogs.js        # Lambda function logic
+├── policies/
+│   └── iam.json              # IAM policies for each component
+├── events/
+│   └── sample-event.json     # Sample EventBridge input
+├── README.md
+└── template.yaml             # (optional) SAM/CDK/Terraform file
+```
+
+---
+
+## 🧪 Testing
+
+To simulate end-to-end flow:
+1. Send test data to API Gateway using `curl` or Postman
+2. Confirm logs appear in S3
+3. Validate CloudWatch logs for Lambda
+4. Check for SNS alerts based on EventBridge filtering
+
+---
+
+## 📃 License
+
+MIT – feel free to use or extend this for your organization or personal projects.
+
+---
+
+## 🙌 Acknowledgments
+
+Created with a focus on **secure event-driven architecture**, and designed to integrate into modern cloud-native security pipelines.
