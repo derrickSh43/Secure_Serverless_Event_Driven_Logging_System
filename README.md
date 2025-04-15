@@ -1,12 +1,30 @@
-# 🛡️ Secure Log Ingestion & Event Routing Pipeline (AWS Serverless)
-
-This project implements a secure, event-driven serverless architecture for log ingestion, threat detection, and security escalation using AWS-native services. It emphasizes **fine-grained IAM controls**, **log enrichment**, and **automated alerting**.
+#  Secure Serverless Event-Driven Logging System
+This project implements a secure, event-driven serverless architecture for log ingestion, threat detection, and security escalation using AWS-native services. It emphasizes fine-grained IAM controls, log enrichment, and automated alerting
 
 ---
 
-## 📌 Overview
+##  What It Is
+A fully serverless logging and alerting pipeline built on AW. It ingests logs, processes them in real-time, and routes security events based on severit. The system uses AWS Lambda, EventBridge, CloudWatch, S3, and SNS to deliver a scalable and secure solution for log management and threat detectio.
 
-The flow captures log data from trusted sources, processes and stores it securely, then routes events based on risk level. Unauthorized injection is blocked through IAM policies, while actionable security findings are escalated via SNS.
+---
+
+## 💡 Why Use It
+
+- **Security-First Design*: Implements strict IAM policies to prevent unauthorized access and log injectin.
+- **Scalability*: Serverless architecture ensures automatic scaling with minimal operational overhed.
+- **Real-Time Processing*: Processes logs in real-time, enabling prompt detection and response to security evens.
+- **Cost-Effective*: Utilizes AWS's pay-per-use model, reducing costs associated with idle resourcs.
+- **Modularity*: Easily extendable to incorporate additional processing steps or integrate with other AWS servics.
+
+---
+
+## 🌟 Key Features
+
+- **Secure Log Ingestion*: Utilizes fine-grained IAM policies to ensure only authorized sources can send lgs.
+- **Event-Driven Processing*: Leverages AWS EventBridge to trigger processing functions based on specific evets.
+- **Real-Time Alerting*: Sends immediate notifications via SNS when security thresholds are breaced.
+- **Centralized Storage*: Stores processed logs in S3 for long-term retention and analyis.
+- **Compliance Ready*: Facilitates adherence to security and compliance standards by providing auditable log trals.
 
 ---
 
@@ -38,66 +56,36 @@ IAM ensures:
 - Only this S3 bucket can invoke EventBridge
 - EventBridge has permission to forward only trusted events
 
-> 🛑 If IAM denies the request, the event is blocked — preventing unauthorized log injection.
+>  If IAM denies the request, the event is blocked — preventing unauthorized log injection.
 
-### 7️⃣ Event Filtering & Routing
-**EventBridge** filters incoming log events and:
-- Routes high-priority logs to **SNS**
-- Drops low-risk or irrelevant data
+##  Architecture
 
-### 8️⃣ Alert Dispatch
-**SNS** delivers alerts to:
-- Email
-- Slack
-- PagerDuty or other notification tools
+```
++----------------+       +----------------+       +----------------+
+|                |       |                |       |                |
+|  Log Sources   +------>+  EventBridge   +------>+    Lambda      |
+|                |       |                |       |  (Processing)  |
++----------------+       +----------------+       +--------+-------+
+                                                           |
+                                                           v
+                                                  +----------------+
+                                                  |                |
+                                                  |      S3        |
+                                                  | (Log Storage)  |
+                                                  +----------------+
+                                                           |
+                                                           v
+                                                  +----------------+
+                                                  |                |
+                                                  |      SNS       |
+                                                  |  (Alerting)    |
+                                                  +----------------+
+```
 
----
-
-## ✅ Security Services
-
-| 🔐 Service       | Purpose |
-|------------------|---------|
-| **CloudWatch**   | Logs API Gateway and Lambda activity |
-| **GuardDuty**    | Monitors API calls, IAM activity, and network traffic |
-| **Security Hub** | Aggregates findings from GuardDuty, IAM, CloudTrail |
-| **IAM**          | Enforces role-based access and prevents abuse of EventBridge |
-
----
-
-## 🔮 Planned Enhancements
-
-| Feature | Description |
-|--------|-------------|
-| **Athena Integration** | Query and analyze log data stored in S3 |
-| **DLQ for Lambda** | Capture failed log-processing events in a dedicated SQS Dead Letter Queue |
-| **DLQ for Security Hub** | Isolate unprocessed high-risk findings for later review and auditing |
 
 ---
 
-## 🧩 AWS Services Used
-
-- API Gateway
-- Lambda
-- Amazon S3 (with KMS encryption)
-- Amazon EventBridge
-- Amazon SNS
-- AWS IAM
-- Amazon CloudWatch
-- AWS GuardDuty
-- AWS Security Hub
-- (Planned: Athena, DLQ Queues)
-
----
-
-## 🔐 IAM Policy Principles
-
-- **Least Privilege**: Only explicitly trusted services and roles are allowed to trigger downstream components.
-- **Separation of Duties**: Lambda can write to S3, but cannot trigger EventBridge directly.
-- **Tamper Prevention**: IAM denies any unauthorized EventBridge trigger attempts.
-
----
-
-## 📁 Directory Structure
+##  Directory Structure
 
 ```text
 .
@@ -121,22 +109,71 @@ IAM ensures:
 
 ---
 
-## 🧪 Testing
+##  Security Services
 
-To simulate end-to-end flow:
-1. Send test data to API Gateway using `curl` or Postman
-2. Confirm logs appear in S3
-3. Validate CloudWatch logs for Lambda
-4. Check for SNS alerts based on EventBridge filtering
+|    Service       | Purpose |
+|------------------|---------|
+| **CloudWatch**   | Logs API Gateway and Lambda activity |
+| **GuardDuty**    | Monitors API calls, IAM activity, and network traffic |
+| **Security Hub** | Aggregates findings from GuardDuty, IAM, CloudTrail |
+| **IAM**          | Enforces role-based access and prevents abuse of EventBridge |
+
+##  Installation & Setup
+
+### Prerequisite
+
+- An AWS account with permissions to create Lambda functions, EventBridge rules, S3 buckets, and SNS toics
+- [Terraform](https://www.terraform.io/downloads.html) installed on your local macine
+- AWS CLI configured with appropriate credentals.
+
+### Steps
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/derrickSh43/Secure_Serverless_Event_Driven_Logging_System.git
+   cd Secure_Serverless_Event_Driven_Logging_System
+   ```
+
+2. **Initialize Terraform**:
+   ```bash
+   terraform init
+   ```
+
+3. **Review the Terraform Plan**:
+   ```bash
+   terraform plan
+   ```
+
+4. **Apply the Terraform Configuration**:
+   ```bash
+   terraform apply
+   ```
+
+5. **Deploy Lambda Function**:
+   Ensure that the `process_logs_lambda.zip` package is correctly referenced in your Terraform configuration or upload it manually via the AWS Console.
 
 ---
 
-## 📃 License
+##  Common Troubleshooting Steps
 
-MIT – feel free to use or extend this for your organization or personal projects.
+- **Lambda Function Errors**
+  - Check the Lambda logs in CloudWatch for error mesages.
+  - Ensure that the IAM role associated with the Lambda function has the necessary permisions.
+
+- **EventBridge Not Triggering Lambda**
+  - Verify that the EventBridge rule is correctly configured and enbled.
+  - Ensure that the event pattern matches the incoming eents.
+
+- **Logs Not Appearing in S3**
+  - Check the Lambda function's code to ensure it correctly writes to the specified S3 bcket.
+  - Verify that the S3 bucket exists and the Lambda function has write permisions.
+
+- **SNS Alerts Not Received**
+  - Confirm that the SNS topic is correctly configured and that subscriptions are confrmed.
+  - Check CloudWatch metrics to see if the SNS topic is receiving mesages.
 
 ---
 
-## 🙌 Acknowledgments
+##  License
 
-Created with a focus on **secure event-driven architecture**, and designed to integrate into modern cloud-native security pipelines.
+This project is licensed under the [MIT License](LIENSE).
