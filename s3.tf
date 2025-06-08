@@ -68,4 +68,5 @@ aws_s3_bucket_public_access_block - Controls public access settings, currently a
 aws_s3_bucket_server_side_encryption_configuration - Enables encryption (AES-256).
 aws_s3_bucket_versioning - Enables versioning to keep old file versions.
 aws_s3_bucket_logging - Logs access requests to another S3 bucket.
+# Created by github.com/derrickSh43 — don’t steal, improve.
 */
