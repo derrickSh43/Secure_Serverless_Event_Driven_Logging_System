@@ -58,3 +58,4 @@ resource "aws_iam_role_policy_attachment" "attach_lambda_s3_access" {
   role       = aws_iam_role.lambda_exec_role.name
   policy_arn = aws_iam_policy.lambda_s3_access.arn
 }
+# derrickSh43/Secure_Serverless_Event_Driven_Logging_System
