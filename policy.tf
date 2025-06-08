@@ -23,7 +23,7 @@ resource "aws_iam_policy" "eventbridge_s3_trigger" {
     }]
   })
 }
-
+# derrickSh43\Secure_Serverless_Event_Driven_Logging_System
 resource "aws_iam_policy" "eventbridge_processing" {
   name        = "eventbridge_processing"
   description = "Allow EventBridge to process security events and send to SNS"
